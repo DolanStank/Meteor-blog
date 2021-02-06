@@ -17,6 +17,7 @@ export const HomePage = () => {
                 <Blog
                     key={blog._id}
                     content={blog.blogContent}
+                    title={blog.blogTitle}
                     author={blog.blogAuthor}
                     createdAt={blog.createdAt}               
                 />
