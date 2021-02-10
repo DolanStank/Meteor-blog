@@ -16,25 +16,32 @@ body {
 
 .nav {
   padding: 12px;
-  text-align: right;
   background-color: grey;
+  height: 40px;
+}
+
+.nav h2 {
+  float: left;
+  padding: 0;
+  margin: 5px;
 }
 
 .nav button {
-  background-color: black; /* Green */
+  background-color: black; 
   border: none;
   border-radius: 6px;
   color: white;
   padding: 10px 24px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 16px;
   margin: 3px;
+  float: right;
+  text-align: right;
 }
 
 .nav button:hover {
-  background-color: white; /* Green */
+  background-color: white;
   color: black;
 }
 .login-form {
@@ -75,17 +82,24 @@ body {
   
 
 }
-.blog-form .blog-content {
+.blog-form .content {
   width: 480px;
   height: 200px;
   border-style: solid;
   border-color: #dddddd;
   border-radius: 6px;
   margin: auto;
-
-
 }
 
+.blog-form .title {
+  width: 480px;
+  height: 30px;
+  border-style: solid;
+  border-color: #dddddd;
+  border-radius: 6px;
+  margin: auto;
+  margin-top: 10px;
+}
 .blog-date {
   text-align: right;
 }

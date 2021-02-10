@@ -10,8 +10,9 @@ export const SigninPage = () => {
         username: '',
         password: ''
     });
-    const history = useHistory();
+    
     const [errorLabel, setErrorLabel] = useState('');
+    const history = useHistory();
 
     const submit = (e) => {
         e.preventDefault();

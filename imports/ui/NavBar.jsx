@@ -4,22 +4,24 @@ import { useTracker } from 'meteor/react-meteor-data';
 
 export const NavBar = () => {
     const user = useTracker(() => Meteor.user());
+    const welcomeMsg = user ? `logged in as ${user.username}` : ''; 
 
     return (
         <nav className="nav">
+            <h2>{welcomeMsg}</h2>
             <Link to="/">
                 <button>Home page</button>
             </Link>
             {user ? (
             <button onClick={() => Meteor.logout()}>Logout</button>
             )
-            : ( <div>
+            : ( <>
             <Link to="/login">
                 <button>Login</button>
             </Link>
             <Link to="/signup">
                 <button>Sign in</button>
-            </Link></div>
+            </Link></>
             )}
         </nav>
     );

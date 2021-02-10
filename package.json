@@ -12,6 +12,7 @@
     "bcrypt": "^5.0.0",
     "meteor-node-stubs": "^1.0.1",
     "react": "^16.13.1",
+    "react-contenteditable": "^3.3.5",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"
   },

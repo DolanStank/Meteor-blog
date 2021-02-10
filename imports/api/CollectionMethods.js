@@ -13,5 +13,21 @@ Meteor.methods({
             throw new Meteor.Error('userExits.email', 'email already exits in collection');
         }
         return true;
+    },
+
+    'blogs.insert'(title, content) {
+        console.log(content)
+
+        if (!this.userId) {
+            throw new Meteor.Error('user not authorized');
+        }
+
+        BlogCollection.insert({
+            title: title,
+            content: content,
+            userId: this.userId,
+            createdAt: new Date
+        });
+
     }
 })

@@ -7,17 +7,20 @@ export const LoginPage = () => {
         username: '',
         password: ''
     });
+
+    const [errorLabel, setErrorLabel] = useState('');
     const history = useHistory();
 
     const submit = (e) => {
         e.preventDefault();
-        try {
-            Meteor.loginWithPassword(status.username, status.password);
-            history.push('/');
-        } catch (err) {
-            console.log(err);
-        }
-        
+
+        Meteor.loginWithPassword(status.username, status.password, (err) => {
+            if (err) {
+                setErrorLabel(err.reason);
+            } else {
+                history.push('/');
+            }
+        });       
     }
 
     const handelChange = e => {
@@ -42,7 +45,7 @@ export const LoginPage = () => {
                     onChange={handelChange}
                     >
                 </input> <br />
-                <label className="errorLabel" style={{color: "red"}}>error</label> <br />
+                <label className="errorLabel" style={{color: "red"}}>{errorLabel}</label> <br />
                 <button>Login</button> <br />
             </form>
             <label>Don't have an account? </label>

@@ -4,9 +4,9 @@ import { BlogCollection } from '/imports/db/BlogCollection';
 import '/imports/api/CollectionMethods';
 
 const insertBlog = (content, title, author) => BlogCollection.insert({
-  blogTitle: title,
-  blogContent: content,
-  blogAuthor: author,
+  Title: title,
+  Content: content,
+  Author: author,
   createdAt: new Date
 })
 
@@ -24,6 +24,6 @@ Meteor.startup(() => {
   }
 
   if (BlogCollection.find().count() === 0) {
-    insertBlog("lorem ipsum", "random latin text", "Lan Pavletič");
+    insertBlog("lorem ipsum", "random latin text", "emerald3032");
   }
 });

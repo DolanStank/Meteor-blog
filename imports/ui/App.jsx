@@ -5,17 +5,17 @@ import { LoginPage } from './LoginPage';
 import { NavBar } from './NavBar';
 import { HomePage } from './HomePage';
 import { SigninPage } from './SigninPage';
+import { CreateBlog } from './CreateBlog';
 import { useTracker } from 'meteor/react-meteor-data';
 
 export const App = () => {
 
   const user = useTracker(() => Meteor.user());
-  const logout = () => console.log("loged out")
+
   return (
     <Router>
       <NavBar
         user={user}
-        logout={logout}
       />
       <Switch>
 
@@ -25,6 +25,10 @@ export const App = () => {
 
         <Route path="/signup">
           <SigninPage />
+        </Route>
+
+        <Route path="/createBlog">
+          <CreateBlog />
         </Route>
 
         <Route path="/">
