@@ -16,18 +16,52 @@ Meteor.methods({
     },
 
     'blogs.insert'(title, content) {
-        console.log(content)
 
         if (!this.userId) {
-            throw new Meteor.Error('user not authorized');
+            throw new Meteor.Error('user.unauthorized');
         }
 
+        // I couldn't find a better way to get usename
+        const username = Meteor.users.find({_id: this.userId}).fetch()[0].username;
         BlogCollection.insert({
             title: title,
             content: content,
             userId: this.userId,
+            author: username,
+            isPosted: true,
             createdAt: new Date
         });
+    },
 
-    }
+    'blogs.remove'(blogId) {
+        if (!this.userId) {
+            throw new Meteor.Error('user.unauthorized');
+        }
+        if(!Meteor.users.find({_id: this.userId}).fetch()[0].isAdmin) {
+            throw new Meteor.Error('only admins can remove blogs');
+        }
+        BlogCollection.remove(blogId, (err) => {
+            if(err) {
+                console.log(err);
+            } 
+        })
+    },
+    
+
+    'blogs.update'(blogId, blogData) {
+        if (!this.userId) {
+            throw new Meteor.Error('user.unauthorized');
+        }
+        if(!Meteor.users.find({_id: this.userId}).fetch()[0].isAdmin) {
+            throw new Meteor.Error('only admin can edit blogs');
+        }
+        BlogCollection.update(blogId, blogData, (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(result);
+            }
+        });
+    },
+
 })

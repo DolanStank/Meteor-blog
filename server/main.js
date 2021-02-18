@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { BlogCollection } from '/imports/db/BlogCollection';
 import '/imports/api/CollectionMethods';
+import '/imports/api/BlogPublication';
 
 const insertBlog = (content, title, author) => BlogCollection.insert({
   Title: title,
@@ -19,8 +20,15 @@ Meteor.startup(() => {
   if (!Accounts.findUserByUsername(SEED_USERNAME)) {
     Accounts.createUser({
       username: SEED_USERNAME,
-      password: SEED_PASSWORD
+      password: SEED_PASSWORD,
     })
+
+    const userId = Accounts.findUserByUsername(SEED_USERNAME)._id;
+    Meteor.users.update(userId, {
+      $set: {
+        isAdmin: true
+      }
+    });
   }
 
   if (BlogCollection.find().count() === 0) {

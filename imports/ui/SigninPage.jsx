@@ -10,32 +10,27 @@ export const SigninPage = () => {
         username: '',
         password: ''
     });
-    
     const [errorLabel, setErrorLabel] = useState('');
     const history = useHistory();
 
     const submit = (e) => {
         e.preventDefault();
 
-        Meteor.call('userExists', status.username, status.email, (err, result) => {
+        Meteor.call('userExists', status.username, status.email, err => {
             if (err) {
                 if (err.error === 'userExits.username') {
-                    setErrorLabel(`${status.username} is aldready taken`)
+                    setErrorLabel(`${status.username} is aldready taken`);
                 }
                 if (err.error === 'userExits.email') {
-                    setErrorLabel(`${status.email} is aldready taken`)
+                    setErrorLabel(`${status.email} is aldready taken`);
                 }
-
             } else {
-
                 Accounts.createUser({
                     email: status.email,
                     username: status.username,
                     password: status.password
                 });
-
                 history.push('/login');
-
             }
         });              
     }
@@ -73,7 +68,9 @@ export const SigninPage = () => {
                 <label className="errorLabel" style={{color: "red"}}>{errorLabel}</label> <br />
                 <button>Signup</button> <br />
             </form>
-            <label>Already have an account? </label>
+            <Link to="/login">
+                <label>Already have an account?</label>
+            </Link>
         </div>
     );
-}
+};

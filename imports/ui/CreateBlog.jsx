@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { useTracker } from 'meteor/react-meteor-data';
 import { useHistory } from 'react-router-dom';
+import { ErrorForm } from './ErrorForm';
 
 export const CreateBlog = () => {
 
@@ -24,7 +25,9 @@ export const CreateBlog = () => {
         
         Meteor.call('blogs.insert', title.current, content.current, (err, result) => {
             if (err) {
-                console.log(err);
+                if (err.error === 'user.unauthorized') {
+                    console.log(err.error);
+                }
             } else {
                 history.push('/');
             }
@@ -33,6 +36,12 @@ export const CreateBlog = () => {
 
     const onCancel = (e) => {
         e.preventDefault();
+    }
+
+    if (!Meteor.user()) {
+        return (
+            <ErrorForm text="you need to login to post blogs" />
+        )
     }
 
     return (

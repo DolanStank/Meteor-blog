@@ -7,15 +7,15 @@ export const LoginPage = () => {
         username: '',
         password: ''
     });
-
     const [errorLabel, setErrorLabel] = useState('');
     const history = useHistory();
 
-    const submit = (e) => {
+    const submit = e => {
         e.preventDefault();
 
         Meteor.loginWithPassword(status.username, status.password, (err) => {
             if (err) {
+                console.log(err);
                 setErrorLabel(err.reason);
             } else {
                 history.push('/');
@@ -48,7 +48,9 @@ export const LoginPage = () => {
                 <label className="errorLabel" style={{color: "red"}}>{errorLabel}</label> <br />
                 <button>Login</button> <br />
             </form>
-            <label>Don't have an account? </label>
+            <Link to="/signup">
+                <label>Don't have an account?</label>
+            </Link>
         </div>
     );
 }
