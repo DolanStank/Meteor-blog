@@ -8,7 +8,7 @@ export const BlogSnippet = ({ title, author, createdAt }) => {
     return (
         <div className="blog-snippet">
             <b>
-            <ContentEditable className="title" html={title.html} disabled={true}/>
+            <p dangerouslySetInnerHTML={{__html: title.html}}></p>
             </b>
             <p>by: {author} created on: {time}</p>
         </div>

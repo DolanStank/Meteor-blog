@@ -14,44 +14,22 @@ function useQuery() {
 }
 
 export const Blog = () => {
-
     let query = useQuery();
     const history = useHistory();
     const blogId = query.get("id");
     const [edit, setEdit] = useState(true);
-    const [blogData, setBlogData] = useState(false);
 
-    const { recentBlogs, noBlog, isLoading } = useTracker(() => {
-        const noDataAvailable = { blogs: [], recentBlogs: [], blogData: false, noBlog: false};
+    const { blogData, recentBlogs, isLoading } = useTracker(() => {
         const handler = Meteor.subscribe('blogs');
-    
-        if (!handler.ready()) {
-          return { ...noDataAvailable, isLoading: true };
-        }
-    
-        const blogs = BlogCollection.find().fetch();
-        const recentBlogs = BlogCollection.find({}, {sort: {createdAt: -1}}).fetch().slice(0,3);
-        if (!BlogCollection.find({_id: blogId}).fetch().length) {
-            return {noBlog: true}
-        }
-        if (blogId !== blogData._id) {
-            setBlogData(blogs.find(blog => blog._id === blogId));
-        }
-    
-        return { blogs, recentBlogs };
-    });
 
-    const { isAdmin } = useTracker(() => {
-        const noDataAvailable = { user: {}};
-        const handler = Meteor.subscribe('user.isAdmin');
+        return {
+            blogData: BlogCollection.findOne({ _id: blogId }),
+            recentBlogs: BlogCollection.find({ _id: { $ne: blogId }}, {sort: {createdAt: -1}}).fetch().slice(0,3),
+            isLoading: !handler.ready(),
+        };
+    }, []);
 
-        if (!handler.ready()) {
-            return noDataAvailable;
-        }
-        const isAdmin = Meteor.users.find().fetch()[0].isAdmin;
-        return { isAdmin };
-    });
-
+    const isAdmin = true;
     const deleteBlog = () => {
         Meteor.call('blogs.remove', blogId, (err) => {
             if (err) {
@@ -84,7 +62,7 @@ export const Blog = () => {
             }
         })
     }
-    
+
     const onCancel = () => {
         history.push("/");
     }
@@ -99,10 +77,10 @@ export const Blog = () => {
         );
     }
 
-    if (noBlog) {
+    if (!blogData) {
         return (<ErrorForm text="that blog does not exist" />)
     }
-    
+
     const time = blogData ? `${blogData.createdAt.getDate()}.${blogData.createdAt.getMonth() + 1}. ${blogData.createdAt.getFullYear()}` : "";
     return (
         <>

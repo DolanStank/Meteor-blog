@@ -7,23 +7,18 @@ import { BlogCollection } from '/imports/db/BlogCollection';
 export const HomePage = () => {
 
     const { blogs, isLoading } = useTracker(() => {
-        const noDataAvailable = { blogs: [] };
-        
         const handler = Meteor.subscribe('blogs');
-    
-        if (!handler.ready()) {
-          return { ...noDataAvailable, isLoading: true };
-        }
-    
-        const blogs = BlogCollection.find().fetch();
-    
-        return { blogs };
-    });
 
+        return {
+            blogs: BlogCollection.find().fetch(),
+            isLoading: !handler.ready()
+        };
+    }, []);
+
+    if (isLoading) return <p>Loading...</p>
 
     return (
         <div>
-            {isLoading && <p>loading</p>}
             <h1>Blogs:</h1>
             {Meteor.user() &&
                 <Link to="createBlog">
@@ -37,7 +32,7 @@ export const HomePage = () => {
                         content={blog.content}
                         title={blog.title}
                         author={blog.author}
-                        createdAt={blog.createdAt}               
+                        createdAt={blog.createdAt}
                     />
                 </Link>
             ))}
