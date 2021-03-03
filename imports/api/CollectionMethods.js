@@ -2,6 +2,10 @@ import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { BlogCollection } from '/imports/db/BlogCollection';
 
+createAlias = (blogTitle) => {
+    return blogTitle.replace("<br>", "").trim().split(" ").join("-");
+}
+
 Meteor.methods({
     'userExists'(username, email) {
         check(username, String);
@@ -15,21 +19,22 @@ Meteor.methods({
         return true;
     },
 
-    'blogs.insert'(title, content) {
+    'blogs.insert'(title, content, isPosted) {
 
         if (!this.userId) {
             throw new Meteor.Error('user.unauthorized');
         }
 
-        // I couldn't find a better way to get usename
-        const username = Meteor.users.find({_id: this.userId}).fetch()[0].username;
+        const username = Meteor.users.findOne({_id: this.userId}).username;
+
         BlogCollection.insert({
             title: title,
             content: content,
             userId: this.userId,
             author: username,
-            isPosted: true,
-            createdAt: new Date
+            isPosted: isPosted,
+            createdAt: new Date,
+            alias: createAlias(title),
         });
     },
 
@@ -37,25 +42,27 @@ Meteor.methods({
         if (!this.userId) {
             throw new Meteor.Error('user.unauthorized');
         }
-        if(!Meteor.users.find({_id: this.userId}).fetch()[0].isAdmin) {
+        if(!Meteor.users.findOne({_id: this.userId}).isAdmin) {
             throw new Meteor.Error('only admins can remove blogs');
         }
+
         BlogCollection.remove(blogId, (err) => {
             if(err) {
                 console.log(err);
-            } 
+            }
         })
     },
-    
+
 
     'blogs.update'(blogId, blogData) {
         if (!this.userId) {
             throw new Meteor.Error('user.unauthorized');
         }
-        if(!Meteor.users.find({_id: this.userId}).fetch()[0].isAdmin) {
+        if(!Meteor.users.findOne({_id: this.userId}).isAdmin && BlogCollection.findOne({_id: blogId}).userId !== this.userId) {
             throw new Meteor.Error('only admin can edit blogs');
         }
-        BlogCollection.update(blogId, blogData, (err, result) => {
+
+        BlogCollection.update(blogId, {...blogData, alias: createAlias(blogData.title)}, (err, result) => {
             if (err) {
                 console.log(err);
             } else {

@@ -32,7 +32,7 @@ export const App = () => {
           <SigninPage />
         </Route>
 
-        <Route path="/Blog">
+        <Route path="/Blog/:alias">
           <Blog />
         </Route>
 
@@ -41,7 +41,7 @@ export const App = () => {
         </Route>
 
         <Route path="/">
-          <HomePage />        
+          <HomePage />
         </Route>
       </Switch>
 

@@ -1,57 +1,41 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import ContentEditable from 'react-contenteditable';
-import { useTracker } from 'meteor/react-meteor-data';
-import { useHistory } from 'react-router-dom';
-import { ErrorForm } from './ErrorForm';
+import { Modal } from './Modal';
 
 export const CreateBlog = () => {
 
-    const user = useTracker(() => Meteor.user());
-    const history = useHistory();
-    
-    const title = useRef('');
-    const content = useRef('');
+    const initialState = {
+        title: '',
+        content: '',
+        isPosted: false
+    };
 
-    const handelTitleChange = e => {
-        title.current = {html: e.target.value};
-    }
+    const [status, setStatus] = useState(initialState);
 
-    const handelContentChange = e => {
-        content.current = {html: e.target.value};
-    }
+    const handleChange = e => {
+        if (e.target.type === "checkbox") {
+            setStatus({...status, [e.target.name]: !status.isPosted});
+        } else {
+            setStatus({...status, [e.currentTarget.getAttribute("name")]: e.target.value});
+        }
+    };
 
-    const onPost = (e) => {
-        e.preventDefault();
-        
-        Meteor.call('blogs.insert', title.current, content.current, (err, result) => {
-            if (err) {
-                if (err.error === 'user.unauthorized') {
-                    console.log(err.error);
-                }
-            } else {
-                history.push('/');
-            }
-        })
-    }
-
-    const onCancel = (e) => {
-        e.preventDefault();
-    }
-
-    if (!Meteor.user()) {
-        return (
-            <ErrorForm text="you need to login to post blogs" />
-        )
+    const handlePost = () => {
+        onPost(status);
+        setStatus(initialState);
+        onClose();
     }
 
     return (
-        <div className="blog-form">
-            <form>
-                <ContentEditable className="title" html={title.current} onChange={handelTitleChange} />
-                <ContentEditable className="content" html={content.current} onChange={handelContentChange} />
-                <button onClick={onPost}>post</button>
-                <button onClick={onCancel}>cancel</button>
-            </form>
-        </div>
+        <Modal>
+            <h2>Create a new blog</h2>
+            <ContentEditable className="title" html={status.title} onChange={handleChange} name="title" value={status.title}/>
+            <ContentEditable className="content" html={status.content} onChange={handleChange} name="content" value={status.content}/>
+            <button onClick={handlePost}>post</button>
+            <button onClick={onClose}>cancel</button><br />
+            <label>Post blog?
+                <input type="checkbox" onChange={handleChange} name="isPosted" value={status.isPosted}/>
+            </label>
+        </Modal>
     );
 }
