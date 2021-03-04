@@ -58,7 +58,7 @@ export const HomePage = () => {
             {isLoading && <p>loading</p>}
             <h1>Blogs:</h1>
             {Meteor.user() &&
-                <button onClick={showModal}>create new</button>
+                <button className="create-button"onClick={showModal}>create new</button>
             }
 
             <Modal isOpen={modalIsOpen} onPost={handlePost}>

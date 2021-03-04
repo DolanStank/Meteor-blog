@@ -4,7 +4,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 
 export const NavBar = () => {
     const user = useTracker(() => Meteor.user());
-    const welcomeMsg = user ? `logged in as ${user.username}` : ''; 
+    const welcomeMsg = user ? `Logged in as ${user.username}` : '';
 
     return (
         <nav className="nav">

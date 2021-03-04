@@ -10,12 +10,18 @@ body {
   margin: 0px;
 
   font-size: 14px;
-  background-color: #4c8fe0;
+  background-color: #618685;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }
 
 .nav {
   padding: 12px;
-  background-color: grey;
+  background-color: #36486b;
   height: 40px;
 }
 
@@ -23,11 +29,12 @@ body {
   float: left;
   padding: 0;
   margin: 5px;
+  color: white;
 }
 
 .nav button {
-  background-color: black; 
-  border: none;
+  background-color: #4040a1;
+  border-color: white;
   border-radius: 6px;
   color: white;
   padding: 10px 24px;
@@ -40,9 +47,24 @@ body {
 }
 
 .nav button:hover {
-  background-color: white;
+  background-color: #fefbd8;
   color: black;
 }
+
+.create-button {
+  background-color: #4040a1;
+  border-color: white;
+  border-radius: 6px;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+}
+
+.create-button:hover {
+  background-color: #fefbd8;
+  color: black;
+}
+
 .login-form {
   text-align: center;
   position: absolute;
@@ -63,6 +85,7 @@ body {
 .login-form h1 {
   color: grey;
 }
+
 .login-form label {
   font-size: small;
   text-align: left;
@@ -84,7 +107,7 @@ body {
   border-width: 2px;
   border-color: black;
   border-radius: 6px;
-  background-color: white; 
+  background-color: white;
 
 }
 .blog-form .content {
