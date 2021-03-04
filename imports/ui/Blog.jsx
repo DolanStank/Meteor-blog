@@ -130,7 +130,7 @@ export const Blog = () => {
             </div>
             <div className="recent-blogs">
                 {recentBlogs.map(blog => (
-                    <Link key={blog._id} to={`/Blog/${blog._id}`}>
+                    <Link key={blog._id} to={`/Blog/${blog.alias}`}>
                         <BlogSnippet
                             key={blog._id}
                             content={blog.content}
